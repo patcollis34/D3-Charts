@@ -1,0 +1,514 @@
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  
+  <script src="http://dimplejs.org/dist/dimple.v1.1.3.min.js"></script>
+<div id="chartContainer1" >
+
+    <script type="text/javascript">
+
+    window.onload=function(){
+    function drawT(sel){
+    var svg1 = dimple.newSvg("#chartContainer1", 590, 400);
+    svg1.attr('id', 'bubble')
+	var myChart1 = new dimple.chart(svg1, data1);
+	myChart1.setBounds(80, 30, 510, 305);
+    myChart1.addMeasureAxis("x","Median Time Between Submissions");
+    myChart1.addMeasureAxis("y", "# of Submissions");
+	var cseries= ["Major", "Programming Exp.","Year","Assignment",
+     "Question #",
+     "Complete", 
+     "# of Submissions",
+     "Median Time Between Submissions",
+     "GPA"
+     ]
+	var index = cseries.indexOf(sel)
+	var temp = cseries[8]
+	cseries[8]=cseries[index]
+	cseries[index]=temp
+	myChart1.addSeries(cseries, dimple.plot.bubble);
+    var myLegend1 = myChart1.addLegend(550, 100, 60, 300, "Right");
+    myChart1.draw();
+
+        myChart1.legends = [];
+
+        svg1.selectAll("title_text")
+          .data(["Click legend to","Show/hide Categories:"])
+          .enter()
+          .append("text")
+            .attr("x", 499)
+            .attr("y", function (d, i) { return 90 + i * 14; })
+            .style("font-family", "sans-serif")
+            .style("font-size", "10px")
+            .style("color", "Black")
+            .text(function (d) { return d; });
+
+        // Get a unique list of Owner values to use when filtering
+        var filterValues = dimple.getUniqueValues(data1, sel);
+        // Get all the rectangles from our now orphaned legend
+        myLegend1.shapes.selectAll("rect")
+          // Add a click event to each rectangle
+          .on("click", function (e) {
+            // This indicates whether the item is already visible or not
+            var hide = false;
+            var newFilters = [];
+            // If the filters contain the clicked shape hide it
+            filterValues.forEach(function (f) {
+              if (f === e.aggField.slice(-1)[0]) {
+                hide = true;
+              } else {
+                newFilters.push(f);
+              }
+            });
+            // Hide the shape or show it
+            if (hide) {
+              d3.select(this).style("opacity", 0.2);
+            } else {
+              newFilters.push(e.aggField.slice(-1)[0]);
+              d3.select(this).style("opacity", 0.8);
+            }
+            // Update the filters
+            filterValues = newFilters;
+            // Filter the data
+            myChart1.data = dimple.filterData(data1, sel, filterValues);
+            // Passing a duration parameter makes the chart animate. Without
+            // it there is no transition
+            myChart1.draw(800);
+          });
+  }  
+    var data1 = [
+    
+{"Student ID":"165",
+"Year":"Sophomore",
+"GPA":"<2",
+"Programming Exp." :"medium",
+"Major":"Physical Sciences",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":17,
+"Median Time Between Submissions":21},
+{"Student ID":"70",
+"Year":"Sophomore",
+"GPA":"<2",
+"Programming Exp." :"high",
+"Major":"CS",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":2,
+"Median Time Between Submissions":7},
+{"Student ID":"308",
+"Year":"Senior",
+"GPA":"<2",
+"Programming Exp." :"high",
+"Major":"DS",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":19,
+"Median Time Between Submissions":15},
+{"Student ID":"301",
+"Year":"Sophomore",
+"GPA":"2.5-3",
+"Programming Exp." :"high",
+"Major":"DS",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":12,
+"Median Time Between Submissions":22},
+{"Student ID":"166",
+"Year":"Sophomore",
+"GPA":"2-2.5",
+"Programming Exp." :"medium",
+"Major":"MATH",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":19,
+"Median Time Between Submissions":3},
+{"Student ID":"184",
+"Year":"Sophomore",
+"GPA":">3.5",
+"Programming Exp." :"high",
+"Major":"DS",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":8,
+"Median Time Between Submissions":11},
+{"Student ID":"42",
+"Year":"Senior",
+"GPA":"2.5-3",
+"Programming Exp." :"high",
+"Major":"CS",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":3,
+"Median Time Between Submissions":16},
+{"Student ID":"21",
+"Year":"Senior",
+"GPA":">3.5",
+"Programming Exp." :"high",
+"Major":"DS",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":15,
+"Median Time Between Submissions":21},
+{"Student ID":"112",
+"Year":"Freshman",
+"GPA":"3-3.5",
+"Programming Exp." :"medium",
+"Major":"CS",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":16,
+"Median Time Between Submissions":15},
+{"Student ID":"127",
+"Year":"Senior",
+"GPA":"<2",
+"Programming Exp." :"low",
+"Major":"Physical Sciences",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":14,
+"Median Time Between Submissions":21},
+{"Student ID":"94",
+"Year":"Junior",
+"GPA":">3.5",
+"Programming Exp." :"medium",
+"Major":"Physical Sciences",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":18,
+"Median Time Between Submissions":11},
+{"Student ID":"356",
+"Year":"Freshman",
+"GPA":">3.5",
+"Programming Exp." :"medium",
+"Major":"MATH",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":11,
+"Median Time Between Submissions":5},
+{"Student ID":"257",
+"Year":"Senior",
+"GPA":">3.5",
+"Programming Exp." :"high",
+"Major":"Physical Sciences",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":0,
+"Median Time Between Submissions":4},
+{"Student ID":"164",
+"Year":"Senior",
+"GPA":"3-3.5",
+"Programming Exp." :"medium",
+"Major":"Physical Sciences",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":4,
+"Median Time Between Submissions":28},
+{"Student ID":"223",
+"Year":"Senior",
+"GPA":"2.5-3",
+"Programming Exp." :"low",
+"Major":"MATH",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":2,
+"Median Time Between Submissions":5},
+{"Student ID":"393",
+"Year":"Senior",
+"GPA":"3-3.5",
+"Programming Exp." :"medium",
+"Major":"MATH",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":6,
+"Median Time Between Submissions":16},
+{"Student ID":"288",
+"Year":"Senior",
+"GPA":"2.5-3",
+"Programming Exp." :"low",
+"Major":"MATH",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":13,
+"Median Time Between Submissions":21},
+{"Student ID":"190",
+"Year":"Freshman",
+"GPA":"2.5-3",
+"Programming Exp." :"medium",
+"Major":"CS",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":16,
+"Median Time Between Submissions":5},
+{"Student ID":"356",
+"Year":"Junior",
+"GPA":"2.5-3",
+"Programming Exp." :"low",
+"Major":"Business",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":6,
+"Median Time Between Submissions":13},
+{"Student ID":"196",
+"Year":"Senior",
+"GPA":"3-3.5",
+"Programming Exp." :"medium",
+"Major":"CS",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":20,
+"Median Time Between Submissions":6},
+{"Student ID":"264",
+"Year":"Senior",
+"GPA":"<2",
+"Programming Exp." :"high",
+"Major":"CS",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":6,
+"Median Time Between Submissions":0},
+{"Student ID":"335",
+"Year":"Senior",
+"GPA":"3-3.5",
+"Programming Exp." :"high",
+"Major":"MATH",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":17,
+"Median Time Between Submissions":1},
+{"Student ID":"60",
+"Year":"Junior",
+"GPA":"<2",
+"Programming Exp." :"medium",
+"Major":"MATH",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":8,
+"Median Time Between Submissions":19},
+{"Student ID":"386",
+"Year":"Senior",
+"GPA":">3.5",
+"Programming Exp." :"medium",
+"Major":"Business",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":2,
+"Median Time Between Submissions":14},
+{"Student ID":"245",
+"Year":"Junior",
+"GPA":"3-3.5",
+"Programming Exp." :"high",
+"Major":"Physical Sciences",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":0,
+"Median Time Between Submissions":21},
+{"Student ID":"161",
+"Year":"Freshman",
+"GPA":"2-2.5",
+"Programming Exp." :"medium",
+"Major":"Physical Sciences",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":11,
+"Median Time Between Submissions":19},
+{"Student ID":"389",
+"Year":"Junior",
+"GPA":"2.5-3",
+"Programming Exp." :"medium",
+"Major":"Physical Sciences",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":7,
+"Median Time Between Submissions":18},
+{"Student ID":"44",
+"Year":"Freshman",
+"GPA":">3.5",
+"Programming Exp." :"high",
+"Major":"Business",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":19,
+"Median Time Between Submissions":7},
+{"Student ID":"125",
+"Year":"Junior",
+"GPA":"2.5-3",
+"Programming Exp." :"medium",
+"Major":"MATH",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":0,
+"Median Time Between Submissions":17},
+{"Student ID":"151",
+"Year":"Junior",
+"GPA":"2-2.5",
+"Programming Exp." :"high",
+"Major":"MATH",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":17,
+"Median Time Between Submissions":23},
+{"Student ID":"95",
+"Year":"Senior",
+"GPA":">3.5",
+"Programming Exp." :"medium",
+"Major":"DS",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":19,
+"Median Time Between Submissions":18},
+{"Student ID":"393",
+"Year":"Junior",
+"GPA":"3-3.5",
+"Programming Exp." :"medium",
+"Major":"MATH",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":2,
+"Median Time Between Submissions":13},
+{"Student ID":"316",
+"Year":"Sophomore",
+"GPA":">3.5",
+"Programming Exp." :"medium",
+"Major":"MATH",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":13,
+"Median Time Between Submissions":1},
+{"Student ID":"228",
+"Year":"Junior",
+"GPA":"2-2.5",
+"Programming Exp." :"low",
+"Major":"Physical Sciences",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":5,
+"Median Time Between Submissions":8},
+{"Student ID":"219",
+"Year":"Sophomore",
+"GPA":"2.5-3",
+"Programming Exp." :"low",
+"Major":"MATH",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":12,
+"Median Time Between Submissions":24},
+{"Student ID":"115",
+"Year":"Freshman",
+"GPA":"2-2.5",
+"Programming Exp." :"medium",
+"Major":"MATH",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":6,
+"Median Time Between Submissions":7},
+{"Student ID":"352",
+"Year":"Sophomore",
+"GPA":"2.5-3",
+"Programming Exp." :"low",
+"Major":"Physical Sciences",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":18,
+"Median Time Between Submissions":1},
+{"Student ID":"243",
+"Year":"Junior",
+"GPA":"2-2.5",
+"Programming Exp." :"high",
+"Major":"CS",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":" true",
+"# of Submissions":4,
+"Median Time Between Submissions":16},
+{"Student ID":"362",
+"Year":"Freshman",
+"GPA":"2.5-3",
+"Programming Exp." :"low",
+"Major":"DS",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":8,
+"Median Time Between Submissions":0},
+{"Student ID":"1",
+"Year":"Senior",
+"GPA":"2.5-3",
+"Programming Exp." :"high",
+"Major":"DS",
+"Assignment": "Kmeans",
+"Question #": "1",
+"Complete":"false",
+"# of Submissions":5,
+"Median Time Between Submissions":11},
+     
+     ];
+     window.onload = drawT("Major");                  
+d3.select("#bt1")
+   .on("click", function() {
+  d3.select("#bubble").remove();
+  drawT("Major")
+});
+
+d3.select('#bt2')
+   .on("click", function() {
+  d3.selectAll("#bubble").remove();
+    drawT("GPA");
+});
+
+d3.select('#bt3')
+   .on("click", function() {
+  d3.selectAll("#bubble").remove();
+    drawT("Year");
+});
+
+d3.select('#bt4')
+   .on("click", function() {
+  d3.selectAll("#bubble").remove();
+    drawT("Programming Exp.");
+});
+}
+
+  </script>
+
+
+<button id="bt1">Major</button>
+<button id="bt2">GPA</button>
+<button id="bt3">Year</button>
+<button id="bt4">Programmming Experience</button>
+</div>
